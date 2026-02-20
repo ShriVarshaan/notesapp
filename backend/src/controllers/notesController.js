@@ -1,7 +1,7 @@
 import {Note, noteSchemaJoi} from "../models/Note.js"
 export const getAllNotes = async (req, res) => {
     try{
-        const notes = await Note.find({})
+        const notes = await Note.find({}).sort({createdAt: -1})
         res.status(200).json(notes)
     } catch (err){
         console.error(err)
