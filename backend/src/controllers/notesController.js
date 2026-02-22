@@ -1,7 +1,7 @@
 import {Note, noteSchemaJoi} from "../models/Note.js"
 export const getAllNotes = async (req, res) => {
     try{
-        const notes = await Note.find({}).sort({createdAt: -1})
+        const notes = await Note.find({user: req.user._id}).sort({createdAt: -1})
         res.status(200).json(notes)
     } catch (err){
         console.error(err)
@@ -16,6 +16,9 @@ export const getNoteById = async (req, res) => {
         if(!note){
             return res.status(404).json({message: "404 not found"})
         }
+        if (!note.user.equals(req.user._id)){
+            return res.status(401).json({message: "Note doesn't belong to you"})
+        }
         return res.status(200).json({message: note})
     }catch (err){
         res.status(500).json({message: err})
@@ -24,7 +27,8 @@ export const getNoteById = async (req, res) => {
 
 export const createNote = async (req, res) => {
     try{
-        const newNote = new Note(req.body)
+        let newNote = new Note(req.body)
+        newNote.user = req.user._id
         const savedNote = await newNote.save()
         res.status(201).json({message: savedNote})
     }catch (err){
@@ -35,10 +39,18 @@ export const createNote = async (req, res) => {
 export const updateNote = async (req, res) => {
     try{
         const {id} = req.params
-        const updatedNote = await Note.findByIdAndUpdate(id, req.body, {returnDocument: "after"})
-        if (!updatedNote){
+        const note = await Note.findById(id)
+
+        if (!note){
             return res.status(404).json({message: "Note not found"})
         }
+
+        if (!note.user.equals(req.user._id)){
+            return res.status(401).json({message: "Note doesn't belong to you"})
+        }
+
+
+        const updatedNote = await Note.findByIdAndUpdate(id, req.body, {returnDocument: "after"})
         res.status(200).json({message:updatedNote})
     }catch (err){
         res.status(500).json({message: err})
@@ -49,10 +61,18 @@ export const updateNote = async (req, res) => {
 export const deleteNote = async (req, res) => {
     try{
         const {id} = req.params
-        const deletedNote = await Note.findByIdAndDelete(id)
-        if (!deletedNote){
+        const note = await Note.findById(id)
+
+        if (!note){
             return res.status(404).json({message: "Note not found"})
         }
+
+        if (!note.user.equals(req.user._id)){
+            return res.status(401).json({message: "Note doesn't belong to you"})
+        }
+        
+        const deletedNote = await Note.findByIdAndDelete(id)
+
         res.status(200).json({message: deletedNote})
     } catch(err){
         res.status(500).json({message: err})

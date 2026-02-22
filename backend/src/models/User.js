@@ -26,10 +26,6 @@ const userSchema = new mongoose.Schema({
             type: Date,
             default: Date.now
         }
-    },
-    notes: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Note"
     }
 })
 

@@ -3,6 +3,7 @@ import {useState} from "react"
 import {ArrowLeftIcon} from "lucide-react"
 import axios from "axios"
 import toast from "react-hot-toast"
+import API from '../../api/axiosInstance.js'
 
 const CreatePage = () => {
     const [title, setTitle] = useState("")
@@ -21,7 +22,7 @@ const CreatePage = () => {
         setLoading(true)
 
         try{
-            await axios.post(`${import.meta.env.VITE_API_URL}/api/notes`, {title, content})
+            await API.post("/api/notes", {title, content})
             toast.success("Note created successfully!")
             navigate("/")
         }catch (err){
