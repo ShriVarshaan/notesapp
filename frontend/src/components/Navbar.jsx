@@ -42,7 +42,7 @@ const Navbar = () => {
                                     <span>Login/Sign up</span>
                                 </Link>
                         ) : (
-                                <a href={`${import.meta.env.VITE_API_URL}/api/auth/logout`} className="btn btn-primary">
+                                <a href={`/api/auth/logout`} className="btn btn-primary">
                                     Logout
                                 </a>
                         )}
