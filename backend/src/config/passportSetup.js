@@ -11,7 +11,8 @@ console.log("passport setup")
 passport.use(new Strategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: `/api/auth/callback`
+    callbackURL: `/api/auth/callback`,
+    proxy: true
 },
     async (accessToken, refreshToken, profile, done) => {
         let user = await User.findOne({googleId: profile.id})
