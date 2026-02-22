@@ -1,6 +1,6 @@
 const LoginPage = () => {
     const handleLogin = () => {
-        window.location.href = `${import.meta.env.VITE_API_URL}/api/auth`
+        window.location.href = `/api/auth`
     }
 
     return (
