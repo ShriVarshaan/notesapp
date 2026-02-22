@@ -10,7 +10,7 @@ router.get("/", passport.authenticate("google", {scope: ["profile", "email"]}))
 router.route("/callback")
     .get(passport.authenticate("google", {failureRedirect: "/login"}),
         (req, res) => {
-            res.redirect(`http://localhost:${process.env.REACT_PORT}/`)
+            res.redirect(`${process.env.FRONTEND_URL}/`)
         }
     )
 

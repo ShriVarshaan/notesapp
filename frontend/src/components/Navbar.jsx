@@ -10,7 +10,7 @@ const Navbar = () => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/auth/current_user`, {withCredentials: true})
+                const res = await API.get(`/api/auth/current_user`, {withCredentials: true})
                 //console.log(res)
                 console.log("Server says user is:", res.data)
                 setUser(res.data || null)
