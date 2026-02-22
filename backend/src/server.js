@@ -37,7 +37,7 @@ app.use(rateLimiter)
 app.use("/api/notes", notesRoutes)
 app.use("/api/auth", authRoutes)
 
-app.use(express.static(path.join(__dirname, "../frontend/dist")))
+app.use(express.static(path.join(__dirname, "../frontend", "dist")))
 
 if(process.env.NODE_ENV === "production"){
         app.get(/(.*)/, (req, res) => {
