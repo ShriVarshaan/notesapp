@@ -10,7 +10,7 @@ router.get("/", passport.authenticate("google", {scope: ["profile", "email"]}))
 router.route("/callback")
     .get(passport.authenticate("google", {failureRedirect: "/login"}),
         (req, res) => {
-            res.redirect(`${process.env.FRONTEND_URL}/`)
+            res.redirect(`/`)
         }
     )
 
@@ -23,7 +23,7 @@ router.get("/logout", (req, res, next) => {
         req.session.destroy(() => {
             res.clearCookie("connect.sid")
 
-            res.redirect(`${process.env.FRONTEND_URL}`)
+            res.redirect(`/`)
         })
     })
 })
