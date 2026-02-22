@@ -5,6 +5,7 @@ import { LoaderIcon, ArrowLeftIcon, Trash2Icon } from "lucide-react"
 import { useEffect } from "react"
 import { Link } from "react-router"
 import toast from "react-hot-toast"
+import API from "../../api/axiosInstance.js"
 
 const NoteDetailPage = () => {
     const [note, setNote] = useState(null)
@@ -17,7 +18,7 @@ const NoteDetailPage = () => {
     useEffect(() => {
         const fetchNote = async () => {
             try{
-                const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/notes/${id}`)
+                const res = await API.get(`/api/notes/${id}`)
                 console.log(res.data.message)
                 setNote(res.data.message)
             }catch(err){
@@ -37,7 +38,7 @@ const NoteDetailPage = () => {
         }
 
         try{
-            await axios.delete(`${import.meta.env.VITE_API_URL}/api/notes/${id}`)
+            await API.delete(`/api/notes/${id}`)
             toast.success("note delete successfully")
             navigate("/")
         }catch (err){
@@ -57,7 +58,7 @@ const NoteDetailPage = () => {
         setSaving(true)
 
         try{
-            await axios.put(`${import.meta.env.VITE_API_URL}/api/notes/${id}`, {title: note.title, content: note.content})
+            await API.put(`/api/notes/${id}`, {title: note.title, content: note.content})
             toast.success("saved changes")
         }catch(err){
             toast.error("couldn't save")

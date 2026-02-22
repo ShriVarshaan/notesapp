@@ -5,16 +5,18 @@ import axios from "axios"
 import toast from "react-hot-toast"
 import NoteCard from "../../components/NoteCard.jsx"
 import NoNotes from "../../components/NoNotes.jsx"
+import API from "../../api/axiosInstance.js"
 
 const HomePage = () => {
     const [isRateLimited, setIsRateLimited] = useState(false)
     const [notes, setNotes] = useState([])
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         const fetchNotes = async () => {
             try{
-                const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/notes`)
+                const res = await API.get("/api/notes")
+                console.log(res.data)
                 setNotes(res.data)
                 setIsRateLimited(false)
             } catch(err){

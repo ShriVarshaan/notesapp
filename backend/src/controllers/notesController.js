@@ -1,8 +1,11 @@
 import {Note, noteSchemaJoi} from "../models/Note.js"
 export const getAllNotes = async (req, res) => {
     try{
-        const notes = await Note.find({user: req.user._id}).sort({createdAt: -1})
-        res.status(200).json(notes)
+        if(req.user){
+            const notes = await Note.find({user: req.user._id}).sort({createdAt: -1})
+            return res.status(200).json(notes)
+        }
+        return res.status(200)
     } catch (err){
         console.error(err)
         res.status(500).json({message: "Internal server error"})
@@ -70,7 +73,7 @@ export const deleteNote = async (req, res) => {
         if (!note.user.equals(req.user._id)){
             return res.status(401).json({message: "Note doesn't belong to you"})
         }
-        
+
         const deletedNote = await Note.findByIdAndDelete(id)
 
         res.status(200).json({message: deletedNote})
